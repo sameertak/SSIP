@@ -3,7 +3,6 @@ from django.core.exceptions import ObjectDoesNotExist
 import pyotp
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import creds
 from .models import phoneModel
 import base64
 from twilio.rest import Client

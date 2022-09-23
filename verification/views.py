@@ -6,6 +6,9 @@ from rest_framework.views import APIView
 from .models import phoneModel
 import base64
 from twilio.rest import Client
+from decouple import config
+from rest_framework.permissions import IsAuthenticated
+
 
 # This class returns the string needed to generate the key
 class generateKey:
@@ -17,6 +20,7 @@ class generateKey:
 EXPIRY_TIME = 50 # seconds
 
 class getPhoneNumberRegistered_TimeBased(APIView):
+    permission_classes = (IsAuthenticated,)
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):
@@ -32,11 +36,15 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         key = base64.b32encode(keygen.returnValue(phone).encode())  # Key is generated
         OTP = pyotp.TOTP(key,interval = EXPIRY_TIME)  # TOTP Model for OTP is created
 
-        client = Client(creds.account_sid, creds.auth_token)
+        account_sid = config('account_sid')
+        auth_token = config('auth_token')
+        from_number = config('from_number')
+
+        client = Client(account_sid, auth_token)
 
         message = client.messages.create(
             body=f'Your OTP is {OTP.now()}',
-            from_=creds.from_number,
+            from_=from_number,
             to=phoneModel.objects.get(Mobile=phone)
         )
 

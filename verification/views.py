@@ -45,7 +45,7 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         message = client.messages.create(
             body=f'Your OTP is {OTP.now()}',
             from_=from_number,
-            to=phoneModel.objects.get(Mobile=phone)
+            to=f'+91{phoneModel.objects.get(Mobile=phone)}'
         )
 
         # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms

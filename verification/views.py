@@ -8,6 +8,7 @@ import base64
 from twilio.rest import Client
 from decouple import config
 from rest_framework.permissions import IsAuthenticated
+import geocoder
 
 
 # This class returns the string needed to generate the key
@@ -24,6 +25,19 @@ class getPhoneNumberRegistered_TimeBased(APIView):
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):
+
+        context = {}
+
+        x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forw_for is not None:
+            ip = x_forw_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        add = geocoder.ip(ip)
+        city = add.city
+        lat_lng = add.latlng
+
         try:
             Mobile = phoneModel.objects.get(Mobile=phone)  # if Mobile already exists the take this else create New One
         except ObjectDoesNotExist:
@@ -31,8 +45,13 @@ class getPhoneNumberRegistered_TimeBased(APIView):
                 Mobile=phone,
             )
             Mobile = phoneModel.objects.get(Mobile=phone)  # user Newly created Model
+
+        Mobile.ip_address = ip
+        Mobile.city = city
+        Mobile.lat_lng = lat_lng
         Mobile.counter += 1
         Mobile.save()  # Save the data
+
         keygen = generateKey()
         key = base64.b32encode(keygen.returnValue(phone).encode())  # Key is generated
         OTP = pyotp.TOTP(key,interval = EXPIRY_TIME)  # TOTP Model for OTP is created

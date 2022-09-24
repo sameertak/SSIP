@@ -11,7 +11,7 @@ class phoneModel(models.Model):
     counter = models.IntegerField(default=0, blank=False)
     ip_address = models.CharField(default='0.0.0.0', max_length=30)
     city = models.CharField(default='NaN', max_length=15, null=True)
-    lat_lng = models.CharField(default='NaN', max_length=10, null=True)
+    lat_lng = models.CharField(default='NaN', max_length=30, null=True)
 
     def __str__(self):
         return str(self.Mobile)

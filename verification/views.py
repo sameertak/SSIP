@@ -49,6 +49,7 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         Mobile.ip_address = ip
         Mobile.city = city
         Mobile.lat_lng = lat_lng
+        Mobile.isVerified = False
         Mobile.counter += 1
         Mobile.save()  # Save the data
 

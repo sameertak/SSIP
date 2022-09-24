@@ -31,6 +31,7 @@ class getPhoneNumberRegistered_TimeBased(APIView):
                 Mobile=phone,
             )
             Mobile = phoneModel.objects.get(Mobile=phone)  # user Newly created Model
+        Mobile.counter += 1
         Mobile.save()  # Save the data
         keygen = generateKey()
         key = base64.b32encode(keygen.returnValue(phone).encode())  # Key is generated

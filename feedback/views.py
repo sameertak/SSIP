@@ -17,8 +17,11 @@ class form(APIView):
             mydata = phoneModel.objects.filter(mobile=key_value[1], is_verified=True).values()
 
             try:
-                print(mydata[0]['id'])
+                mydata[0]['id']
                 serializer.save()
+                mydata = phoneModel.objects.get(mobile=key_value[1])
+                mydata.is_verified = False
+                mydata.save()
                 return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
             except IndexError:
                 return Response({"status": "error", "data": serializer.errors}, status = status.HTTP_401_UNAUTHORIZED)

@@ -27,9 +27,7 @@ class getPhoneNumberRegistered_TimeBased(APIView):
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):
-
         context = {}
-
         x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forw_for is not None:
             ip = x_forw_for.split(',')[0]

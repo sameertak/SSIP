@@ -12,7 +12,7 @@ class responseModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     res1 = models.CharField(max_length=1, blank=False)
     res2 = models.CharField(max_length=1, blank=False)
-    res3 = models.CharField(max_length=200)
+    res3 = models.CharField(max_length=300)
     res4 = models.CharField(max_length=1, blank=False)
 
     def __str__(self):

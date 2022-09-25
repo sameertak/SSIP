@@ -9,7 +9,9 @@ from twilio.rest import Client
 from decouple import config
 from rest_framework.permissions import IsAuthenticated
 import geocoder
-
+from django.utils import timezone
+# Create your models here.
+import django
 
 # This class returns the string needed to generate the key
 class generateKey:
@@ -39,19 +41,19 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         lat_lng = add.latlng
 
         try:
-            Mobile = phoneModel.objects.get(Mobile=phone)  # if Mobile already exists the take this else create New One
+            mobile = phoneModel.objects.get(mobile=phone)  # if mobile already exists then take this else create New One
         except ObjectDoesNotExist:
             phoneModel.objects.create(
-                Mobile=phone,
+                mobile=phone,
             )
-            Mobile = phoneModel.objects.get(Mobile=phone)  # user Newly created Model
+            mobile = phoneModel.objects.get(mobile=phone)  # user Newly created Model
 
-        Mobile.ip_address = ip
-        Mobile.city = city
-        Mobile.lat_lng = lat_lng
-        Mobile.isVerified = False
-        Mobile.counter += 1
-        Mobile.save()  # Save the data
+        mobile.ip_address = ip
+        mobile.city = city
+        mobile.lat_lng = lat_lng
+        mobile.is_verified = False
+        mobile.counter += 1
+        mobile.save()  # Save the data
 
         keygen = generateKey()
         key = base64.b32encode(keygen.returnValue(phone).encode())  # Key is generated
@@ -66,17 +68,17 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         message = client.messages.create(
             body=f'Your OTP is {OTP.now()}',
             from_=from_number,
-            to=f'+91{phoneModel.objects.get(Mobile=phone)}'
+            to=f'+91{phoneModel.objects.get(mobile=phone)}'
         )
 
         # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
-        return Response({"OTP": OTP.now(), "id": Mobile.id}, status=200)  # Just for demonstration
+        return Response({"OTP": OTP.now(), "id": mobile.id}, status=200)  # Just for demonstration
 
     # This Method verifies the OTP
     @staticmethod
     def post(request, phone):
         try:
-            Mobile = phoneModel.objects.get(Mobile=phone)
+            mobile = phoneModel.objects.get(mobile=phone)
         except ObjectDoesNotExist:
             return Response("User does not exist", status=404)  # False Call
 
@@ -84,7 +86,7 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         key = base64.b32encode(keygen.returnValue(phone).encode())  # Generating Key
         OTP = pyotp.TOTP(key,interval = EXPIRY_TIME)  # TOTP Model 
         if OTP.verify(request.data["otp"]):  # Verifying the OTP
-            Mobile.isVerified = True
-            Mobile.save()
+            mobile.is_verified = True
+            mobile.save()
             return Response("You are authorised", status=200)
         return Response("OTP is wrong/expired", status=400)

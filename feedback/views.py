@@ -14,7 +14,7 @@ class form(APIView):
             verify = serializer.validated_data
             tuple_list = list(verify.items())
             key_value = tuple_list[-1]
-            mydata = phoneModel.objects.filter(Mobile=key_value[1], isVerified=True).values()
+            mydata = phoneModel.objects.filter(mobile=key_value[1], is_verified=True).values()
 
             try:
                 print(mydata[0]['id'])

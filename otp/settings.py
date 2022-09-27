@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'feedback',
     'rest_framework.authtoken',
     'verification',
-    'login'
+    'login',
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = {
@@ -64,9 +65,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:5173/'
-)
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]
 
 ROOT_URLCONF = 'otp.urls'
 

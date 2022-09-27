@@ -8,7 +8,6 @@ import base64
 from twilio.rest import Client
 from decouple import config
 from rest_framework.permissions import IsAuthenticated
-import geocoder
 from django.utils import timezone
 # Create your models here.
 import django
@@ -27,16 +26,6 @@ class getPhoneNumberRegistered_TimeBased(APIView):
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):
-        context = {}
-        x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forw_for is not None:
-            ip = x_forw_for.split(',')[0]
-        else:
-            ip = request.META.get('REMOTE_ADDR')
-
-        add = geocoder.ip(ip)
-        city = add.city
-        lat_lng = add.latlng
 
         try:
             mobile = phoneModel.objects.get(mobile=phone)  # if mobile already exists then take this else create New One
@@ -46,9 +35,7 @@ class getPhoneNumberRegistered_TimeBased(APIView):
             )
             mobile = phoneModel.objects.get(mobile=phone)  # user Newly created Model
 
-        mobile.ip_address = ip
-        mobile.city = city
-        mobile.lat_lng = lat_lng
+
         mobile.is_verified = False
         mobile.counter += 1
         mobile.save()  # Save the data
@@ -62,11 +49,11 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         from_number = config('from_number')
 
         client = Client(account_sid, auth_token)
-
+        phone_no = phoneModel.objects.get(mobile=phone)
         message = client.messages.create(
             body=f'Your OTP is {OTP.now()}',
             from_=from_number,
-            to=f'+91{phoneModel.objects.get(mobile=phone)}'
+            to=f'+91{phone_no.mobile}'
         )
 
         # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms

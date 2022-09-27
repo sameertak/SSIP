@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CORS_ORIGIN_ALLOW_ALL=True
 
 # Application definition
 
@@ -65,22 +65,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "content-disposition",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
-
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://localhost:5174", "http://127.0.0.1:5174", "http://127.0.0.1:5173", "http://127.0.0.1:5173"]
-
 ROOT_URLCONF = 'otp.urls'
 
 TEMPLATES = [

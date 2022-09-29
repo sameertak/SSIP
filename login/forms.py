@@ -1,9 +1,9 @@
 from django import forms
-from models import *
 
-class CustomerForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+# Create your forms here.
 
-    class Meta:
-        model = Customer
-        fields = ('email', 'password')
+
+class FeedbackForm(forms.Form):
+	name = forms.CharField(max_length = 50)
+	email = forms.CharField(max_length = 264)
+	password = forms.CharField(max_length = 50)

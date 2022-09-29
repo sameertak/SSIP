@@ -9,6 +9,12 @@ from twilio.rest import Client
 from decouple import config
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
+
+import hashlib
+from Crypto import Random
+from Crypto.Cipher import AES
+from base64 import b64encode, b64decode
+
 # Create your models here.
 import django
 
@@ -16,7 +22,7 @@ import django
 class generateKey:
     @staticmethod
     def returnValue(phone):
-        return str(phone) + str(datetime.date(datetime.now())) + "Some Random Secret Key"
+        return str(phone) + str(datetime.date(datetime.now()))
 
 # Time after which OTP will expire
 EXPIRY_TIME = 50 # seconds
@@ -26,7 +32,6 @@ class getPhoneNumberRegistered_TimeBased(APIView):
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):
-
         try:
             mobile = phoneModel.objects.get(mobile=phone)  # if mobile already exists then take this else create New One
         except ObjectDoesNotExist:

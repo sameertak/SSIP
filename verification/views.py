@@ -11,6 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 # Create your models here.
 import django
+import geocoder
+
 
 # This class returns the string needed to generate the key
 class generateKey:
@@ -26,6 +28,15 @@ class getPhoneNumberRegistered_TimeBased(APIView):
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):
+        x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forw_for is not None:
+            ip = x_forw_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        add = geocoder.ip(ip)
+        city = add.city
+        lat_lng = add.latlng
+
         try:
             mobile = phoneModel.objects.get(mobile=phone)  # if mobile already exists then take this else create New One
         except ObjectDoesNotExist:
@@ -36,6 +47,9 @@ class getPhoneNumberRegistered_TimeBased(APIView):
 
 
         mobile.is_verified = False
+        mobile.ip_address = ip
+        mobile.city = city
+        mobile.lat_lng = lat_lng
         mobile.counter += 1
         mobile.save()  # Save the data
 

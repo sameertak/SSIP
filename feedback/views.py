@@ -16,7 +16,6 @@ class form(APIView):
             ip = x_forw_for.split(',')[0]
         else:
             ip = request.META.get('REMOTE_ADDR')
-
         add = geocoder.ip(ip)
         city = add.city
         lat_lng = add.latlng

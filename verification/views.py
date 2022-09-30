@@ -42,12 +42,12 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         except ObjectDoesNotExist:
             phoneModel.objects.create(
                 mobile=phone,
+                ip_address=ip
             )
             mobile = phoneModel.objects.get(mobile=phone)  # user Newly created Model
 
 
         mobile.is_verified = False
-        mobile.ip_address = ip
         mobile.city = city
         mobile.lat_lng = lat_lng
         mobile.counter += 1

@@ -15,5 +15,5 @@ class phoneModel(models.Model):
     city = models.CharField(default="0.0.0.0", max_length=15, null=True, blank=True)
     lat_lng = models.CharField(default="0.0.0.0", max_length=30, null=True, blank=True)
 
-    class Meta:
-        unique_together = ('mobile', 'ip_address',)
+    def __str__(self):
+        return str(self.mobile)

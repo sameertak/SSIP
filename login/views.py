@@ -5,13 +5,14 @@ from rest_framework import status
 from .models import adminModel
 from rest_framework.permissions import IsAuthenticated
 from decouple import config
-# from .serializers import LoginSerializers
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
+
 
 # Create your views here.
 class admin_login(APIView):
     permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         try:
             user = adminModel.objects.get(email=request.data['email'])

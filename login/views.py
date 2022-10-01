@@ -28,6 +28,7 @@ class admin_login(APIView):
 
 
 class admin_verify(APIView):
+    permission_classes = (IsAuthenticated,)
     def post(self, request):
         email = request.data['email']
         pswd = request.data['password']

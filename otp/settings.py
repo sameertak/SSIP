@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'feedback',
     'rest_framework.authtoken',
     'verification',
+    'stations',
     'corsheaders',
     'rest_framework_simplejwt',
 ]

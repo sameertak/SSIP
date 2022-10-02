@@ -24,7 +24,7 @@ class generateKey:
 EXPIRY_TIME = 50 # seconds
 
 class getPhoneNumberRegistered_TimeBased(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):
@@ -70,7 +70,7 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         )
 
         # Using Multi-Threading send the OTP Using Messaging Services like Twilio or Fast2sms
-        return Response({"OTP": OTP.now(), "id": mobile.id}, status=200)  # Just for demonstration
+        return Response({"id": mobile.id}, status=200)  # Just for demonstration
 
     # This Method verifies the OTP
     @staticmethod

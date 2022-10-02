@@ -24,3 +24,5 @@ whitenoise==6.2.0
 python-decouple
 geocoder
 django-cors-headers
+djangorestframework-simplejwt
+django-filter

@@ -2,22 +2,23 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from .serializers import FeedbackSerializers
 from .models import responseModel
 from verification.models import phoneModel
 
 
 class form(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     def post(self, request):
-
         serializer = FeedbackSerializers(data=request.data)
         if serializer.is_valid():
             verify = serializer.validated_data
             tuple_list = list(verify.items())
             key_value = tuple_list[-1]
             mydata = phoneModel.objects.filter(mobile=key_value[1], is_verified=True).values()
-
+            print(mydata[0])
             try:
                 mydata[0]['id']
                 serializer.save()

@@ -13,4 +13,4 @@ class Station(models.Model):
     pincode = models.CharField(max_length=6)
 
     def __str__(self):
-        return self(self.station_name)
+        return str(self.station_name)

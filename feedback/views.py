@@ -27,7 +27,7 @@ class form(APIView):
                 mydata.save()
                 return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
             except IndexError:
-                return Response({"status": "error", "data": serializer.errors}, status = status.HTTP_401_UNAUTHORIZED)
+                return Response({"status": "Phone Number is not verified", "data": serializer.errors}, status = status.HTTP_401_UNAUTHORIZED)
         else:
             return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 

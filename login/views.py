@@ -32,11 +32,10 @@ class admin_verify(APIView):
     def post(self, request):
         email = request.data['email']
         pswd = request.data['password']
-
         try:
             admin = adminModel.objects.get(email=email)
             if check_password(pswd, admin.password):
                 return Response("YES", status=200)
-            return Response("NO", status=404)
+            return Response("NO", status=401)
         except:
             return Response("Doesn't Exist", status=404)

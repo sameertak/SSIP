@@ -17,12 +17,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add extra responses here
         data['role'] = self.user.groups.values_list('name', flat=True)
-        # context = {
-        #     'staions':
-        # }
-        # print(context)
+
         try:
-            data['station_id'] = (stationModel.objects.filter(email=self.user.id).values())[0]['station_id']
+            data['station_id'] = (stationModel.objects.filter(email=self.user.username).values())[0]['station_id']
             return data
         except:
             return data
@@ -50,9 +47,9 @@ class RegisterHere(APIView):
             users = User.objects.create_user(username=username, password=password)
 
             if users:
-                users.groups.add(1)
+                users.groups.add(role)
                 users.save()
-                return Response('Data is stored', status=201)
+                return Response('Data is stored', status=200)
             else:
                 return Response('Data cannot be stored, try again later', status=400)
         except:

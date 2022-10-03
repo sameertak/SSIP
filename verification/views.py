@@ -7,7 +7,7 @@ from .models import phoneModel
 import base64
 from twilio.rest import Client
 from decouple import config
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.utils import timezone
 # Create your models here.
 import django
@@ -23,8 +23,9 @@ class generateKey:
 # Time after which OTP will expire
 EXPIRY_TIME = 50 # seconds
 
+
 class getPhoneNumberRegistered_TimeBased(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,AllowAny]
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):

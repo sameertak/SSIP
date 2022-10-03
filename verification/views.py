@@ -25,6 +25,7 @@ EXPIRY_TIME = 50 # seconds
 
 
 class getPhoneNumberRegistered_TimeBased(APIView):
+    permission_classes = [AllowAny]
     # Get to Create a call for OTP
     @staticmethod
     def get(request, phone):

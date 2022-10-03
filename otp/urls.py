@@ -28,6 +28,7 @@ from .views import MyTokenObtainPairView
 urlpatterns = [
     path('verify/', include('verification.urls')),
     path('feedback/', include('feedback.urls')),
+    path('station/', include('stations.urls')),
     path('admin/', admin.site.urls),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/verify/', TokenVerifyView.as_view()),

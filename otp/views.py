@@ -2,7 +2,7 @@ import json
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from stations.models import Station
+from stations.models import stationModel
 from django.core import serializers
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -16,7 +16,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         #     'staions':
         # }
         # print(context)
-        data['station_id'] = (Station.objects.filter(email=self.user.id).values())[0]['station_id']
+        data['station_id'] = (stationModel.objects.filter(email=self.user.id).values())[0]['station_id']
         return data
 
 

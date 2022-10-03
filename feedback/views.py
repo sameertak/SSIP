@@ -16,13 +16,12 @@ class form(APIView):
         if serializer.is_valid():
             verify = serializer.validated_data
             tuple_list = list(verify.items())
-            key_value = tuple_list[-1]
-            mydata = phoneModel.objects.filter(mobile=key_value[1], is_verified=True).values()
-            print(mydata[0])
+            stat = tuple_list[-1]
+            mob = tuple_list[-2]
+            mydata = phoneModel.objects.filter(mobile=mob[1], is_verified=True).values()
             try:
-                mydata[0]['id']
                 serializer.save()
-                mydata = phoneModel.objects.get(mobile=key_value[1])
+                mydata = phoneModel.objects.get(mobile=mob[1])
                 mydata.is_verified = False
                 mydata.save()
                 return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)

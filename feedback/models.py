@@ -7,7 +7,8 @@ import django
 
 
 class responseModel(models.Model):
-    res_id = models.ForeignKey('verification.phoneModel', on_delete=models.CASCADE)
+    res = models.ForeignKey('verification.phoneModel', on_delete=models.CASCADE)
+    station = models.ForeignKey('stations.stationModel', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     res1 = models.CharField(max_length=50, blank=False)
@@ -16,4 +17,4 @@ class responseModel(models.Model):
     res4 = models.CharField(max_length=1, blank=False)
 
     def __str__(self):
-        return str(self.res_id)
+        return f'Response {str(self.id)}'

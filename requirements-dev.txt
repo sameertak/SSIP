@@ -25,4 +25,4 @@ python-decouple
 geocoder
 django-cors-headers
 djangorestframework-simplejwt
-django-filter
+django-url-filter

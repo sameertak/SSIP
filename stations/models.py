@@ -5,7 +5,7 @@ from django.conf import settings
 # Create your models here.
 
 
-class Station(models.Model):
+class stationModel(models.Model):
 
     email = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     station_id = models.CharField(max_length=10)

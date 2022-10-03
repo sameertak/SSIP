@@ -1,6 +1,9 @@
+import json
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from stations.models import Station
+from django.core import serializers
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -8,8 +11,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         refresh = self.get_token(self.user)
 
         # Add extra responses here
-        data['username'] = self.user.username
-        data['groups'] = self.user.groups.values_list('name', flat=True)
+        data['email'] = self.user.username
+        data['group'] = self.user.groups.values_list('name', flat=True)
+        # context = {
+        #     'staions':
+        # }
+        # print(context)
+        data['station'] = (Station.objects.filter(email=self.user.id).values())[0]['station_name']
         return data
 
 

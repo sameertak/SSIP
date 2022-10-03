@@ -10,7 +10,6 @@ from verification.models import phoneModel
 
 
 class form(APIView):
-    permission_classes = [IsAuthenticated]
     def post(self, request):
         serializer = FeedbackSerializers(data=request.data)
         if serializer.is_valid():

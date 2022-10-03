@@ -16,7 +16,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         #     'staions':
         # }
         # print(context)
-        data['station_id'] = (Station.objects.filter(email=self.user.id).values())[0]['station_name']
+        data['station_id'] = (Station.objects.filter(email=self.user.id).values())[0]['station_id']
         return data
 
 

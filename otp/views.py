@@ -11,13 +11,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         refresh = self.get_token(self.user)
 
         # Add extra responses here
-        data['email'] = self.user.username
-        data['group'] = self.user.groups.values_list('name', flat=True)
+        data['role'] = self.user.groups.values_list('name', flat=True)
         # context = {
         #     'staions':
         # }
         # print(context)
-        data['station'] = (Station.objects.filter(email=self.user.id).values())[0]['station_name']
+        data['station_id'] = (Station.objects.filter(email=self.user.id).values())[0]['station_name']
         return data
 
 

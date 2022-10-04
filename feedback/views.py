@@ -16,8 +16,7 @@ class form(APIView):
         if serializer.is_valid():
             verify = serializer.validated_data
             tuple_list = list(verify.items())
-            stat = tuple_list[-1]
-            mob = tuple_list[-2]
+            mob = tuple_list[-1]
             mydata = phoneModel.objects.filter(mobile=mob[1], is_verified=True).values()
             try:
                 serializer.save()

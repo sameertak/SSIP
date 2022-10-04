@@ -34,28 +34,30 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 class RegisterHere(APIView):
     def get(self, request):
-        username = request.data['username']
-        password = request.data['password']
-        station_id = request.data['station_id']
-
         try:
-            station = stationModel.objects.get(station_id=station_id)
-        except:
-            return Response('Station does not exists.', status=status.HTTP_404_NOT_FOUND)
-        station.email=username
-        station.save()
+            username = request.data['username']
+            password = request.data['password']
+            station_id = request.data['station_id']
 
-        try:
-            users = User.objects.create_user(username=username, password=password)
-            if users:
-                users.groups.add(2)
-                print(users.groups)
-                users.save()
-                return Response('Data is stored', status=200)
-            else:
-                return Response('Data cannot be stored, try again later', status=status.HTTP_502_BAD_GATEWAY)
-        except:
-            return Response('User Already Exists', status=400)
+            try:
+                station = stationModel.objects.get(station_id=station_id)
+            except:
+                return Response('Station does not exists.', status=status.HTTP_404_NOT_FOUND)
+            station.email=username
+            station.save()
 
+            try:
+                users = User.objects.create_user(username=username, password=password)
+                if users:
+                    users.groups.add(2)
+                    print(users.groups)
+                    users.save()
+                    return Response('Data is stored', status=status.HTTP_200_OK)
+                else:
+                    return Response('Data cannot be stored, try again later', status=status.HTTP_502_BAD_GATEWAY)
+            except:
+                return Response('User Already Exists', status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response('Provide Details', status=status.HTTP_502_BAD_GATEWAY)
 class HumanOnlyDataSerializer(RestCaptchaSerializer):
     pass

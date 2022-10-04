@@ -3,3 +3,4 @@ gunicorn
 django-cors-headers
 Pillow
 asyncio
+django-filter

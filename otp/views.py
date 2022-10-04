@@ -35,7 +35,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class RegisterHere(APIView):
     def get(self, request):
         try:
-            username = request.data['username']
+            username = request.data['email']
             password = request.data['password']
             station_id = request.data['station_id']
 

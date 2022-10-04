@@ -1,5 +1,8 @@
 import json
-from rest_framework import serializers
+
+from rest_captcha.serializers import RestCaptchaSerializer
+from rest_framework import serializers, status
+from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -15,15 +18,18 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
         refresh = self.get_token(self.user)
 
-        # Add extra responses here
         data['role'] = self.user.groups.values_list('name', flat=True)
-
+        print(self.user.groups.values_list)
         try:
             data['station_id'] = (stationModel.objects.filter(email=self.user.username).values())[0]['station_id']
             return data
         except:
             return data
 
+class GetTokenSerializer(RestCaptchaSerializer, Serializer):
+    def verifu(self, po):
+        print(po)
+        return Response('hmm')
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -32,25 +38,26 @@ class RegisterHere(APIView):
     def get(self, request):
         username = request.data['username']
         password = request.data['password']
-        role = request.data['role']
         station_id = request.data['station_id']
 
-        station = stationModel.objects.get(station_id=station_id)
-
+        try:
+            station = stationModel.objects.get(station_id=station_id)
+        except:
+            return Response('Station does not exists.', status=status.HTTP_404_NOT_FOUND)
         station.email=username
         station.save()
-        if role=='Admin':
-            role=1
-        else:
-            role=2
+
         try:
             users = User.objects.create_user(username=username, password=password)
-
             if users:
-                users.groups.add(role)
+                users.groups.add(2)
+                print(users.groups)
                 users.save()
                 return Response('Data is stored', status=200)
             else:
-                return Response('Data cannot be stored, try again later', status=400)
+                return Response('Data cannot be stored, try again later', status=status.HTTP_502_BAD_GATEWAY)
         except:
             return Response('User Already Exists', status=400)
+
+class HumanOnlyDataSerializer(RestCaptchaSerializer):
+    pass

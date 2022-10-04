@@ -1,5 +1,3 @@
-import json
-
 from rest_captcha.serializers import RestCaptchaSerializer
 from rest_framework import serializers, status
 from rest_framework.serializers import Serializer

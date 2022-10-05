@@ -7,7 +7,7 @@ from django.conf import settings
 
 class stationModel(models.Model):
 
-    email = models.CharField(max_length=20)
+    email = models.CharField(blank=True, max_length=20)
     station_id = models.CharField(max_length=10)
     station_name = models.CharField(max_length=25)
     district = models.CharField(max_length=15)

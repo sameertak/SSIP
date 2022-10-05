@@ -94,7 +94,7 @@ class GetStationNameById(APIView):
             )
         except:
             return Response(
-                status=status.HTTP_200_OK,
+                status=status.HTTP_404_NOT_FOUND,
                 data={
                     "message": "Station id doesn't exist"
                 }

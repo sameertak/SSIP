@@ -6,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 from .models import stationModel
 from .StationSerialzer import StationSerializer
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 class AddStation(APIView):
@@ -78,7 +78,7 @@ class AddStation(APIView):
 #     permission_classes = [IsAuthenticated]
 
 class GetStationNameById(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def post(self, request):
         response = request.data
         station_id = response['station_id']

@@ -118,7 +118,8 @@ class ResetPassword(generics.GenericAPIView):
             current_site = get_current_site(request=request).domain
             relativeLink = reverse('password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
             absurl = 'http://'+current_site+relativeLink
-            email_body = f'''Hello,
+            email_body = f'''
+            Hello,
             We recieved a request to reset your password.
             Click on the link to *reset* your password if the action was triggered by you
             {absurl}
@@ -129,9 +130,15 @@ class ResetPassword(generics.GenericAPIView):
 
             Util.send_email(data)
 
+            return Response(
+                data={
+                    'message':'''We have sent a link to reset your password on the registered email. Check Spam Folder if not able to find :)'''
+                },
+                status=status.HTTP_200_OK
+            )
         return Response(
             data={
-                'message':'''We have sent a link to reset your password on the registered email. Check Spam Folder if not able to find :)'''
+                'message': '''The email id is not associated with the database. Please Contact Admin, if you think it is a mistake.'''
             },
             status=status.HTTP_200_OK
         )

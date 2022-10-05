@@ -101,3 +101,59 @@ class GetStationNameById(APIView):
             )
 
 
+class GetAllDistrict(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        try:
+            district_data = stationModel.objects.values_list('district').distinct()
+
+            districts = []
+            for i in district_data:
+                districts.append(i[0])
+            return Response(
+                status=status.HTTP_200_OK,
+                data={
+                    "success": "true",
+                    "message": districts
+                }
+            )
+
+        except:
+            return Response(
+                status=status.HTTP_200_OK,
+                data={
+                    "success": "false",
+                    "message": "Unknown error"
+                }
+            )
+
+
+class GetAllSubdivisions(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        try:
+            subdivision_data = stationModel.objects.values_list('subdivision').distinct()
+
+            districts = []
+            for i in subdivision_data:
+                districts.append(i[0])
+            return Response(
+                status=status.HTTP_200_OK,
+                data={
+                    "success": "true",
+                    "message": districts
+                }
+            )
+
+        except:
+            return Response(
+                status=status.HTTP_200_OK,
+                data={
+                    "success": "false",
+                    "message": "Unknown error"
+                }
+            )

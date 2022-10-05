@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView
 )
-from .views import MyTokenObtainPairView, RegisterHere, VerifyToken, ResetPassword
+from .views import MyTokenObtainPairView, RegisterHere, VerifyToken, ResetPassword, NewPassword
 
 urlpatterns = [
     path('verify/', include('verification.urls')),
@@ -17,6 +17,7 @@ urlpatterns = [
     path('register/', RegisterHere.as_view(), name='Register'),
     path('request-reset/', ResetPassword.as_view(), name='request-reset-password'),
     path('reset/<uidb64>/<token>/', VerifyToken.as_view(), name='password-reset-confirm'),
+    path('reset-complete/', NewPassword.as_view(), name='password-reset-complete'),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/verify/', TokenVerifyView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

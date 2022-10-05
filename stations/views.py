@@ -89,7 +89,6 @@ class GetStationNameById(APIView):
             return Response(
                 status=status.HTTP_200_OK,
                 data={
-                    "success": "true",
                     "message": stationName.station_name
                 }
             )
@@ -97,7 +96,6 @@ class GetStationNameById(APIView):
             return Response(
                 status=status.HTTP_200_OK,
                 data={
-                    "success": "false",
                     "message": "Station id doesn't exist"
                 }
             )

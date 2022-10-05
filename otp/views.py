@@ -1,17 +1,19 @@
-from rest_captcha.serializers import RestCaptchaSerializer
-from rest_framework import serializers, status
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.serializers import Serializer
+from rest_framework import status, generics
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from stations.models import stationModel
-from django.core import serializers
-from django.conf import settings
+from otp.serializers import ResetPasswordSerializer
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from stations.models import stationModel
 
+from otp.utils import Util
+from stations.models import stationModel
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -99,3 +101,39 @@ class RegisterHere(APIView):
                     "message": "Only Admins are allowed to Add Data"
                 }
             )
+
+
+class ResetPassword(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = ResetPasswordSerializer
+    def post(self, request):
+        data = {'request':request, 'data':request.data}
+        serializer = self.serializer_class(data=data)
+        # serializer.is_valid(raise_exception=True)
+        email = request.data['email']
+        if User.objects.filter(username=email).exists():
+            user = User.objects.get(username=email)
+            uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
+            token=PasswordResetTokenGenerator().make_token(user)
+            current_site = get_current_site(request=request).domain
+            relativeLink = reverse('password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
+            absurl = 'http://'+current_site+relativeLink
+            print(absurl)
+
+            email_body = 'Else Ignore the Mail.'+absurl
+            email_subject = '''A Request to reset your password'''
+            data={'email_body': email_body, 'to_email': user.email, 'email_subject': email_subject}
+
+            Util.send_email(data)
+
+        return Response(
+            data={
+                'message':'''We have sent a link to reset your password on the registered email. Check Spam Folder if not able to find :)'''
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class VerifyToken(generics.GenericAPIView):
+    def get(self,request, uidb64, token):
+        pass

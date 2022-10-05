@@ -1,3 +1,6 @@
+import csv
+
+from django.http import HttpResponse
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -5,7 +8,7 @@ from rest_framework import status
 from .serializers import FeedbackSerializers
 from .models import responseModel
 from verification.models import phoneModel
-
+import pandas as pd
 
 class form(APIView):
     permission_classes = [AllowAny]
@@ -40,11 +43,11 @@ class form(APIView):
 
 
 class FilterFeedback(APIView):
-    permission_classes = [IsAuthenticated]
-
+    permission_classes = [AllowAny]
     def post(self, request):
         response = request.data
         global serializer
+
         try:
             station_id = response["station_id"]
             rating = response["rating"]
@@ -151,5 +154,16 @@ class FilterFeedback(APIView):
                 )
 
     def get(self, request):
+        try:
+            response = HttpResponse(content_type='text/csv')
+            writer = csv.writer(response)
 
-        return Response(content_type='text/csv', data = serializer.data, status=status.HTTP_200_OK)
+            response['Content-Diposition'] = 'attachment; filename="data.csv'
+            writer.writerow(['id', 'station_id', 'res1', 'res2', 'res3','res4','created_at','updated_at','res'])
+
+            for ele in (serializer.data):
+                writer.writerow(list(ele.values()))
+
+            return response
+        except:
+            return Response(data={'message':'Unable to access the data'}, status=status.HTTP_400_BAD_REQUEST)

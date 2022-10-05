@@ -1,5 +1,6 @@
 from rest_captcha.serializers import RestCaptchaSerializer
 from rest_framework import serializers, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -10,6 +11,7 @@ from django.conf import settings
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from stations.models import stationModel
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -24,40 +26,76 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except:
             return data
 
-class GetTokenSerializer(RestCaptchaSerializer, Serializer):
-    def verifu(self, po):
-        print(po)
-        return Response('hmm')
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+
 class RegisterHere(APIView):
-    def get(self, request):
-        try:
-            username = request.data['email']
-            password = request.data['password']
-            station_id = request.data['station_id']
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if request.user.groups.all().values_list()[0][1] == 'Admin':
 
             try:
-                station = stationModel.objects.get(station_id=station_id)
-            except:
-                return Response('Station does not exists.', status=status.HTTP_404_NOT_FOUND)
-            station.email=username
-            station.save()
+                username = request.data['email']
+                password = request.data['password']
+                station_id = request.data['station_id']
 
-            try:
-                users = User.objects.create_user(username=username, password=password)
-                if users:
-                    users.groups.add(2)
-                    print(users.groups)
-                    users.save()
-                    return Response('Data is stored', status=status.HTTP_200_OK)
-                else:
-                    return Response('Data cannot be stored, try again later', status=status.HTTP_502_BAD_GATEWAY)
+                try:
+                    station = stationModel.objects.get(station_id=station_id)
+
+                except:
+                    return Response(
+                        status=status.HTTP_404_NOT_FOUND,
+                        data={
+                              'message': 'Station does not exists.'
+                        }
+                    )
+
+                station.email = username
+                station.save()
+
+                try:
+                    users = User.objects.create_user(username=username, password=password)
+                    if users:
+                        users.groups.add(2)
+                        print(users.groups)
+                        users.save()
+                        return Response(
+                            status=status.HTTP_200_OK,
+                            data={
+                                  'message': 'Data is stored'
+                            }
+                        )
+                    else:
+                        return Response(
+                            status=status.HTTP_502_BAD_GATEWAY,
+                            data={
+                                  'message':'Data cannot be stored, try again later'
+                            }
+                        )
+
+                except:
+                    return Response(
+                        status=status.HTTP_400_BAD_REQUEST,
+                        data={
+                            'message' : 'User Already Exists'
+                        }
+                    )
             except:
-                return Response('User Already Exists', status=status.HTTP_400_BAD_REQUEST)
-        except:
-            return Response('Provide Details', status=status.HTTP_502_BAD_GATEWAY)
-class HumanOnlyDataSerializer(RestCaptchaSerializer):
-    pass
+                return Response(
+                    status=status.HTTP_502_BAD_GATEWAY,
+                    data={
+                        'message' : 'Provide Required Details'
+                    }
+                )
+
+        else:
+            return Response(
+                status=status.HTTP_401_UNAUTHORIZED,
+                data={
+                    "success": "Error",
+                    "message": "Only Admins are allowed to Add Data"
+                }
+            )

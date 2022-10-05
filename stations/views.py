@@ -102,9 +102,9 @@ class GetStationNameById(APIView):
 
 
 class GetAllDistrict(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
-    def post(self, request):
+    def get(self, request):
 
         try:
             district_data = stationModel.objects.values_list('district').distinct()
@@ -131,9 +131,9 @@ class GetAllDistrict(APIView):
 
 
 class GetAllSubdivisions(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
-    def post(self, request):
+    def get(self, request):
 
         try:
             subdivision_data = stationModel.objects.values_list('subdivision').distinct()

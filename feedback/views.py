@@ -257,7 +257,7 @@ class FilterFeedback(APIView):
 
 
 class GetRatingCount(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         response = request.data

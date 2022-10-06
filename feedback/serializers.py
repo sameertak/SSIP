@@ -16,3 +16,14 @@ class FeedbackSerializers(serializers.ModelSerializer):
         model = responseModel
         fields = ('__all__')
         # read_only_fields = ('date_created', 'ip_address')
+
+
+class RatingCountSerializer(serializers.ModelSerializer):
+    # district = serializers.CharField(min_length=1)
+    # subdivision = serializers.CharField(min_length=1)
+    res4 = serializers.CharField(max_length=1)
+    count = serializers.CharField(max_length=3)
+
+    class Meta:
+        model = responseModel
+        fields = ('res4', 'count')

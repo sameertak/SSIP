@@ -27,4 +27,3 @@ django-cors-headers
 djangorestframework-simplejwt
 django-url-filter
 django-rest-captcha
-pandas

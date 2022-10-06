@@ -243,7 +243,7 @@ class FilterFeedback(APIView):
             response = HttpResponse(content_type='text/csv')
             writer = csv.writer(response)
 
-            response['Content-Diposition'] = 'attachment; filename="data.csv'
+            response['Content-Diposition'] = 'attachment; filename="feedback.csv"'
             writer.writerow(['id', 'station_id', 'res1', 'res2', 'res3', 'res4', 'created_at', 'updated_at', 'res'])
 
             for ele in serializer.data:

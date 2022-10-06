@@ -46,7 +46,7 @@ class form(APIView):
 
 
 class FilterFeedback(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @staticmethod
     def post(request):

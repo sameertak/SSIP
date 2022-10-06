@@ -268,7 +268,7 @@ class GetRatingCount(APIView):
             station_id = response["station_id"]
 
             if station_id == "" and district == "" and subdivision == "":
-                q = "SELECT id, res4, COUNT(*) AS count FROM feedback_responsemodel GROUP BY res4"
+                q = "SELECT res4, COUNT(*) AS count FROM feedback_responsemodel GROUP BY id,res4"
                 queryset = responseModel.objects.raw(q)
                 serializer = RatingCountSerializer(queryset, many=True)
                 return Response(

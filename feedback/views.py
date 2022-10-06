@@ -2,7 +2,7 @@ import csv
 
 from django.http import HttpResponse
 from django.utils.datastructures import MultiValueDictKeyError
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -46,7 +46,7 @@ class form(APIView):
 
 
 class FilterFeedback(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @staticmethod
     def post(request):
@@ -59,9 +59,9 @@ class FilterFeedback(APIView):
             rating = response["rating"]
             station_id = response["station_id"]
 
-            if (station_id != "" and rating == "" and district == "" and subdivision == ""):
+            if station_id != "" and rating == "" and district == "" and subdivision == "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
-                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' "
+                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -69,10 +69,9 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (station_id != "" and rating != "" and district == "" and subdivision == ""):
+            if station_id != "" and rating != "" and district == "" and subdivision == "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
-                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.res4=" + "'" + rating + \
-                    "' "
+                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.res4=" + "'" + rating + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -80,10 +79,10 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (station_id != "" and rating == "" and district != "" and subdivision == ""):
+            if station_id != "" and rating == "" and district != "" and subdivision == "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
                     "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + \
-                    district + "' "
+                    district + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -91,10 +90,10 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (station_id != "" and rating == "" and district == "" and subdivision != ""):
+            if station_id != "" and rating == "" and district == "" and subdivision != "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
                     "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.subdivision=" + "'" + \
-                    subdivision + "' "
+                    subdivision + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -102,8 +101,10 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (station_id != "" and rating != "" and district == "" and subdivision != ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.res4=" + "'" + rating + "' AND f.subdivision=" + "'" + subdivision + "'"
+            if station_id != "" and rating != "" and district == "" and subdivision != "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.res4=" + "'" + \
+                    rating + "' AND f.subdivision=" + "'" + subdivision + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -111,8 +112,10 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (station_id != "" and rating != "" and district != "" and subdivision == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.res4=" + "'" + rating + "' AND f.district=" + "'" + district + "'"
+            if station_id != "" and rating != "" and district != "" and subdivision == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.res4=" + "'" + \
+                    rating + "' AND f.district=" + "'" + district + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -120,8 +123,10 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (station_id != "" and rating == "" and district != "" and subdivision == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + district + "'"
+            if station_id != "" and rating == "" and district != "" and subdivision == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + \
+                    district + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -129,8 +134,10 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (station_id != "" and rating == "" and district != "" and subdivision != ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + district + "' AND f.subdivision=" + "'" + subdivision + "'"
+            if station_id != "" and rating == "" and district != "" and subdivision != "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + \
+                    district + "' AND f.subdivision=" + "'" + subdivision + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -138,8 +145,8 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (district == "" and subdivision == "" and rating == "" and station_id == ""):
-                q = "SELECT * FROM feedback_responsemodel"
+            if district == "" and subdivision == "" and rating == "" and station_id == "":
+                q = "SELECT * FROM feedback_responsemodel ORDER BY feedback_responsemodel.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -147,8 +154,9 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (district != "" and subdivision == "" and rating == "" and station_id == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.district=" + "'" + district + "'"
+            if district != "" and subdivision == "" and rating == "" and station_id == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.district=" + "'" + district + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
@@ -156,64 +164,70 @@ class FilterFeedback(APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            if (district == "" and subdivision != "" and rating == "" and station_id == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.subdivision=" + "'" + subdivision + "'"
-                queryset = responseModel.objects.raw(q)
-                serializer = FeedbackSerializers(queryset, many=True)
-                return Response(
-                    serializer.data,
-                    status=status.HTTP_200_OK,
-
-                )
-
-            if (district == "" and subdivision == "" and rating != "" and station_id == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE f.res4=" + "'" + rating + "'"
-                queryset = responseModel.objects.raw(q)
-                serializer = FeedbackSerializers(queryset, many=True)
-                return Response(
-                    serializer.data,
-                    status=status.HTTP_200_OK,
-
-                )
-
-            if (district != "" and subdivision != "" and rating == "" and station_id == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.district=" + "'" + district + "' AND s.subdivision=" + "'" + subdivision + "'"
-                queryset = responseModel.objects.raw(q)
-                serializer = FeedbackSerializers(queryset, many=True)
-                return Response(
-                    serializer.data,
-                    status=status.HTTP_200_OK,
-
-                )
-
-            if (district != "" and subdivision == "" and rating != "" and station_id == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.district=" + "'" + district + "' AND f.res4=" + "'" + rating + "'"
-                queryset = responseModel.objects.raw(q)
-                serializer = FeedbackSerializers(queryset, many=True)
-                return Response(
-                    serializer.data,
-                    status=status.HTTP_200_OK,
-
-                )
-
-            if (district == "" and subdivision != "" and rating != "" and station_id == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.subdivision=" + "'" + subdivision + "' AND f.res4=" + "'" + rating + "'"
-                queryset = responseModel.objects.raw(q)
-                serializer = FeedbackSerializers(queryset, many=True)
-                return Response(
-                    serializer.data,
-                    status=status.HTTP_200_OK,
-
-                )
-
-            if (district != "" and subdivision != "" and rating != "" and station_id == ""):
-                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id WHERE s.subdivision=" + "'" + subdivision + "' AND f.res4=" + "'" + rating + "' AND s.district=" + "'" + district + "'"
+            if district == "" and subdivision != "" and rating == "" and station_id == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.subdivision=" + "'" + subdivision + "' ORDER BY f.created_at DESC"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 return Response(
                     serializer.data,
                     status=status.HTTP_200_OK,
                 )
+
+            if district == "" and subdivision == "" and rating != "" and station_id == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE f.res4=" + "'" + rating + "' ORDER BY f.created_at DESC"
+                queryset = responseModel.objects.raw(q)
+                serializer = FeedbackSerializers(queryset, many=True)
+                return Response(
+                    serializer.data,
+                    status=status.HTTP_200_OK,
+                )
+
+            if district != "" and subdivision != "" and rating == "" and station_id == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.district=" + "'" + district + "' AND s.subdivision=" + "'" + \
+                    subdivision + "' ORDER BY f.created_at DESC"
+                queryset = responseModel.objects.raw(q)
+                serializer = FeedbackSerializers(queryset, many=True)
+                return Response(
+                    serializer.data,
+                    status=status.HTTP_200_OK,
+                )
+
+            if district != "" and subdivision == "" and rating != "" and station_id == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.district=" + "'" + district + "' AND f.res4=" + "'" + rating + \
+                    "' ORDER BY f.created_at DESC"
+                queryset = responseModel.objects.raw(q)
+                serializer = FeedbackSerializers(queryset, many=True)
+                return Response(
+                    serializer.data,
+                    status=status.HTTP_200_OK,
+                )
+
+            if district == "" and subdivision != "" and rating != "" and station_id == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.subdivision=" + "'" + subdivision + "' AND f.res4=" + "'" + \
+                    rating + "' ORDER BY f.created_at DESC"
+                queryset = responseModel.objects.raw(q)
+                serializer = FeedbackSerializers(queryset, many=True)
+                return Response(
+                    serializer.data,
+                    status=status.HTTP_200_OK,
+                )
+
+            if district != "" and subdivision != "" and rating != "" and station_id == "":
+                q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
+                    "f.station_id=s.station_id WHERE s.subdivision=" + "'" + subdivision + "' AND f.res4=" + "'" + \
+                    rating + "' AND s.district=" + "'" + district + "' ORDER BY f.created_at DESC"
+                queryset = responseModel.objects.raw(q)
+                serializer = FeedbackSerializers(queryset, many=True)
+                return Response(
+                    serializer.data,
+                    status=status.HTTP_200_OK,
+                )
+
         except MultiValueDictKeyError as e:
             print()
             return Response(
@@ -223,7 +237,8 @@ class FilterFeedback(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         try:
             response = HttpResponse(content_type='text/csv')
             writer = csv.writer(response)
@@ -231,9 +246,10 @@ class FilterFeedback(APIView):
             response['Content-Diposition'] = 'attachment; filename="data.csv'
             writer.writerow(['id', 'station_id', 'res1', 'res2', 'res3', 'res4', 'created_at', 'updated_at', 'res'])
 
-            for ele in (serializer.data):
+            for ele in serializer.data:
                 writer.writerow(list(ele.values()))
 
             return response
+
         except:
             return Response(data={'message': 'Unable to access the data'}, status=status.HTTP_400_BAD_REQUEST)

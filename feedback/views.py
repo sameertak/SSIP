@@ -46,7 +46,7 @@ class form(APIView):
 
 
 class FilterFeedback(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @staticmethod
     def post(request):
@@ -244,7 +244,8 @@ class FilterFeedback(APIView):
             writer = csv.writer(response)
 
             response['Content-Diposition'] = 'attachment; filename="feedback.csv"'
-            writer.writerow(['id', 'station_id', 'res1', 'res2', 'res3', 'res4', 'created_at', 'updated_at', 'res'])
+            print(response)
+            writer.writerow(['ID', 'Station ID', 'HOW DID YOU COME TO THE POLICE STATION?', 'AFTER HOW MUCH TIME YOU WERE HEARD IN PS?', 'HOW WOULD YOU DESCRIBE YOUR EXPERIENCE WITH POLICE OFFICERS IN THE POLICE STATION?', 'RATINGS', 'created_at', 'updated_at', 'res'])
 
             for ele in serializer.data:
                 writer.writerow(list(ele.values()))

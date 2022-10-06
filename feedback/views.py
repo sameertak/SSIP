@@ -237,19 +237,19 @@ class FilterFeedback(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-    @staticmethod
-    def get(request):
+    def get(self, request, *args, **kwargs):
         try:
             response = HttpResponse(content_type='text/csv')
-            writer = csv.writer(response)
+            response['Content-Disposition'] = 'attachment; filename="export.csv"'
 
-            response['Content-Diposition'] = 'attachment; filename="feedback.csv"'
-            print(response)
+            writer = csv.writer(response)
             writer.writerow(['ID', 'Station ID', 'HOW DID YOU COME TO THE POLICE STATION?', 'AFTER HOW MUCH TIME YOU WERE HEARD IN PS?', 'HOW WOULD YOU DESCRIBE YOUR EXPERIENCE WITH POLICE OFFICERS IN THE POLICE STATION?', 'RATINGS', 'created_at', 'updated_at', 'res'])
 
             for ele in serializer.data:
                 writer.writerow(list(ele.values()))
 
+            print(writer)
+            print(response)
             return response
 
         except:

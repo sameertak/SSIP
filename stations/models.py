@@ -23,7 +23,7 @@ class stationModel(models.Model):
 class ControlroomModel(models.Model):
 
     district = models.CharField(max_length=15)
-    contact = models.CharField(max_length=20)
+    contact = models.CharField(null=True, blank=True, max_length=20)
     email = models.EmailField(max_length=26)
 
     def __str__(self):

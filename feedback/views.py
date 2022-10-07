@@ -317,9 +317,19 @@ class GetTotalCountDistrictSubdivision(APIView):
         district = response['district']
 
         if district != "":
-            q = "SELECT stations_stationmodel.id, COUNT(*) AS count FROM feedback_responsemodel INNER JOIN stations_stationmodel ON feedback_responsemodel.station_id = stations_stationmodel.station_id WHERE " \
-                "stations_stationmodel.district =" + "'" + district + "' GROUP BY stations_stationmodel.subdivision"
+            q = f"""select
+    s.subdivision,
+    count(f.*) as count
+from
+    feedback_responsemodel f
+inner join
+    stations_stationmodel s
+    on f.station_id = s.station_id
+    and s.district = '{district}'
+group by s.subdivision"""
             queryset = stationModel.objects.raw(q)
+            # query = responseModel.objects.filter(station_id=stationModel.station_id)
+            # print(query)
             serializer = SubdivisionCountSerializer(queryset, many=True)
             return Response(
                 serializer.data,

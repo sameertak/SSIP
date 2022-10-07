@@ -107,7 +107,7 @@ class GetAllDistrict(APIView):
     def get(self, request):
 
         try:
-            district_data = stationModel.objects.values_list('district').distinct()
+            district_data = ControlroomModel.objects.values_list('district').distinct()
 
             districts = []
             for i in district_data:
@@ -137,7 +137,7 @@ class GetAllSubdivisions(APIView):
 
         # try:
             district = request.data['district']
-            district_data = ControlroomModel.objects.filter(district=district).values()
+            district_data = stationModel.objects.filter(district=district).values()
 
             # subdivision_data = district_data.objects.values_list('subdivision').distinct()
             sub = []

@@ -19,12 +19,17 @@ class FeedbackSerializers(serializers.ModelSerializer):
 
 
 class RatingCountSerializer(serializers.ModelSerializer):
-    # district = serializers.CharField(min_length=1)
-    # subdivision = serializers.CharField(min_length=1)
     res4 = serializers.CharField(max_length=1)
     count = serializers.CharField(max_length=3)
-    # station_id = serializers.CharField(min_length=1)
 
     class Meta:
         model = responseModel
         fields = ('res4', 'count')
+
+class SubdivisionCountSerializer(serializers.ModelSerializer):
+    subdivision = serializers.CharField(max_length=20)
+    count = serializers.CharField(max_length=3)
+
+    class Meta:
+        model = responseModel
+        fields = ('subdivision', 'count')

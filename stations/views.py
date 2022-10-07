@@ -107,7 +107,7 @@ class GetAllDistrict(APIView):
     def get(self, request):
 
         try:
-            district_data = ControlroomModel.objects.values_list('district').distinct()
+            district_data = ControlroomModel.objects.order_by('district').values_list('district').distinct()
 
             districts = []
             for i in district_data:

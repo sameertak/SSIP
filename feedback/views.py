@@ -70,7 +70,7 @@ class FilterFeedback(APIView):
 
             if station_id != "" and rating == "" and district == "" and subdivision == "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
-                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'
+                    "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 count = len(serializer.data)
@@ -165,7 +165,7 @@ class FilterFeedback(APIView):
             if station_id != "" and rating == "" and district != "" and subdivision == "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
                     "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + \
-                    district + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'
+                    district + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 count = len(serializer.data)
@@ -181,7 +181,7 @@ class FilterFeedback(APIView):
             if station_id != "" and rating == "" and district != "" and subdivision != "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
                     "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + \
-                    district + "' AND f.subdivision=" + "'" + subdivision + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'
+                    district + "' AND f.subdivision=" + "'" + subdivision + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 count = len(serializer.data)
@@ -211,7 +211,7 @@ class FilterFeedback(APIView):
 
             if district != "" and subdivision == "" and rating == "" and station_id == "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
-                    "f.station_id=s.station_id WHERE s.district=" + "'" + district + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'
+                    "f.station_id=s.station_id WHERE s.district=" + "'" + district + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 count = len(serializer.data)

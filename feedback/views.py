@@ -238,7 +238,7 @@ class FilterFeedback(APIView):
             )
 
     def get(self, request, *args, **kwargs):
-            response = HttpResponse(content_type='text/csv')
+            response = Response(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename="feedback.csv"'
 
             writer = csv.writer(response)

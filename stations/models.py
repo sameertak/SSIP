@@ -18,3 +18,13 @@ class stationModel(models.Model):
 
     def __str__(self):
         return str(self.station_name)
+
+
+class ControlroomModel(models.Model):
+
+    district = models.CharField(max_length=15)
+    contact = models.CharField(max_length=20)
+    email = models.EmailField(max_length=26)
+
+    def __str__(self):
+        return str(self.district)

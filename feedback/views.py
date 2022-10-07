@@ -250,10 +250,10 @@ class FilterFeedback(APIView):
             response['Content-Disposition'] = 'attachment; filename="feedback.csv"'
 
             writer = csv.writer(response)
-            writer.writerow(['ID', 'Station ID', 'HOW DID YOU COME TO THE POLICE STATION?', 'AFTER HOW MUCH TIME YOU WERE HEARD IN PS?', 'HOW WOULD YOU DESCRIBE YOUR EXPERIENCE WITH POLICE OFFICERS IN THE POLICE STATION?', 'RATINGS', 'created_at', 'updated_at', 'res'])
+            writer.writerow(['Station ID', 'HOW DID YOU COME TO THE POLICE STATION?', 'AFTER HOW MUCH TIME YOU WERE HEARD IN PS?', 'HOW WOULD YOU DESCRIBE YOUR EXPERIENCE WITH POLICE OFFICERS IN THE POLICE STATION?', 'RATINGS', 'created_at'])
 
             for ele in serializer.data:
-                writer.writerow(list(ele.values()))
+                writer.writerow(list(ele.values())[1:-2])
 
             print(writer)
             print(response)

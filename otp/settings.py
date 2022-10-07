@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     'stations',
     'corsheaders',
     'rest_framework_simplejwt',
-    'rest_captcha'
 ]
 
 REST_FRAMEWORK = {

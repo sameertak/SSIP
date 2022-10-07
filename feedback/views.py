@@ -26,7 +26,7 @@ class form(APIView):
                 verify = phoneModel.objects.filter(mobile=mob[1], is_verified=True).values_list()[0]
                 serializer.save()
                 mydata = phoneModel.objects.get(mobile=mob[1])
-                mydata.is_verified = False
+                # mydata.is_verified = False
                 mydata.save()
                 return Response(data={"message": serializer.data}, status=status.HTTP_200_OK)
             except IndexError:
@@ -268,7 +268,7 @@ class GetRatingCount(APIView):
             station_id = response["station_id"]
 
             if station_id == "" and district == "" and subdivision == "":
-                q = "SELECT id, res4, COUNT(*) AS count FROM feedback_responsemodel GROUP BY id,res4"
+                q = "SELECT feedback_responsemodel.id, res4, COUNT(*) AS count FROM feedback_responsemodel GROUP BY feedback_responsemodel.station_id,res4"
                 queryset = responseModel.objects.raw(q)
                 serializer = RatingCountSerializer(queryset, many=True)
                 return Response(
@@ -277,8 +277,8 @@ class GetRatingCount(APIView):
                 )
 
             if station_id != "" and district == "" and subdivision == "":
-                q = "SELECT stations_stationmodel.id, res4, COUNT(*) AS count FROM feedback_responsemodel WHERE " \
-                    "feedback_responsemodel.station_id =" + "'" + station_id + "' GROUP BY stations_stationmodel.id," \
+                q = "SELECT feedback_responsemodel.id, res4, COUNT(*) AS count FROM feedback_responsemodel WHERE " \
+                    "feedback_responsemodel.station_id =" + "'" + station_id + "' GROUP BY feedback_responsemodel.station_id," \
                                                                                "res4 "
                 queryset = responseModel.objects.raw(q)
                 serializer = RatingCountSerializer(queryset, many=True)
@@ -288,9 +288,9 @@ class GetRatingCount(APIView):
                 )
 
             if station_id == "" and district != "" and subdivision == "":
-                q = "SELECT stations_stationmodel.id, res4, COUNT(*) AS count FROM feedback_responsemodel INNER JOIN " \
+                q = "SELECT feedback_responsemodel.id, res4, COUNT(*) AS count FROM feedback_responsemodel INNER JOIN " \
                     "stations_stationmodel ON feedback_responsemodel.station_id=stations_stationmodel.station_id " \
-                    "WHERE stations_stationmodel.district =" + "'" + district + "' GROUP BY stations_stationmodel.id," \
+                    "WHERE stations_stationmodel.district =" + "'" + district + "' GROUP BY feedback_responsemodel.station_id," \
                                                                                 "res4 "
                 queryset = responseModel.objects.raw(q)
                 serializer = RatingCountSerializer(queryset, many=True)
@@ -304,7 +304,7 @@ class GetRatingCount(APIView):
                     "INNER JOIN stations_stationmodel ON " \
                     "feedback_responsemodel.station_id=stations_stationmodel.station_id WHERE " \
                     "stations_stationmodel.subdivision =" + "'" + subdivision + "' AND " \
-                                                                                "stations_stationmodel.district="+"'"+district+"' GROUP BY res4 "
+                                                                                "stations_stationmodel.district="+"'"+district+"' GROUP BY stations_stationmodel.id, res4 "
                 queryset = responseModel.objects.raw(q)
                 serializer = RatingCountSerializer(queryset, many=True)
                 return Response(
@@ -319,4 +319,3 @@ class GetRatingCount(APIView):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
-

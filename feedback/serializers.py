@@ -29,8 +29,7 @@ class RatingCountSerializer(serializers.ModelSerializer):
 class SubdivisionCountSerializer(serializers.ModelSerializer):
     subdivision = serializers.CharField(max_length=20)
     count = serializers.CharField(max_length=3)
-    station_id = serializers.CharField(max_length=10)
 
     class Meta:
         model = responseModel
-        fields = ('subdivision', 'count', 'station_id')
+        fields = ('subdivision', 'count')

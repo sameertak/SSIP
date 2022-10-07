@@ -238,7 +238,6 @@ class FilterFeedback(APIView):
             )
 
     def get(self, request, *args, **kwargs):
-        try:
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename="feedback.csv"'
 
@@ -250,8 +249,6 @@ class FilterFeedback(APIView):
 
             return Response(response, status=status.HTTP_200_OK)
 
-        except:
-            return Response(data={'message': 'Unable to access the data'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetRatingCount(APIView):

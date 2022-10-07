@@ -14,7 +14,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from stations.models import stationModel
-from .serializers import FeedbackSerializers, RatingCountSerializer, SubdivisionCountSerializer
+from .serializers import FeedbackSerializers, RatingCountSerializer, SubdivisionCountSerializer, \
+    AvgRatingCountSerializer
 from .models import responseModel
 from verification.models import phoneModel
 
@@ -120,7 +121,7 @@ class FilterFeedback(APIView):
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
                     "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + \
                     district + f"' ORDER BY f.created_at DESC"
-                queryset = responseModel.objects.raw(q) 
+                queryset = responseModel.objects.raw(q)
                 serializer1 = FeedbackSerializers(queryset, many=True)
 
                 count = len(serializer1.data)
@@ -519,3 +520,15 @@ class GetCountForEachRating(APIView):
             data=lst,
                 status=status.HTTP_200_OK
             )
+
+class GetAverageRatings(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        q = "SELECT stations_stationmodel.*, AVG(feedback_responsemodel.res4) AS count FROM feedback_responsemodel INNER JOIN stations_stationmodel ON feedback_responsemodel.station_id = stations_stationmodel.station_id GROUP BY stations_stationmodel.district"
+        queryset = stationModel.objects.raw(q)
+
+        serializer = AvgRatingCountSerializer(queryset, many=True)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )

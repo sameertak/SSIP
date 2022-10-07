@@ -34,3 +34,10 @@ class SubdivisionCountSerializer(serializers.ModelSerializer):
         model = responseModel
         fields = ('subdivision', 'count')
 
+class AvgRatingCountSerializer(serializers.ModelSerializer):
+    district = serializers.CharField(min_length=1)
+    count = serializers.CharField(min_length=1)
+
+    class Meta:
+        model=responseModel
+        fields = ('district', 'count')

@@ -68,7 +68,7 @@ class getPhoneNumberRegistered_TimeBased(APIView):
         return Response(
             status=status.HTTP_200_OK,
             data={
-                "id": mobile.id, "otp" : OTP.now()
+                "id": mobile.id
             }
         )
 

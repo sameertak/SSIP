@@ -253,16 +253,6 @@ class FilterFeedback(APIView):
                 writer.writerow(list(ele.values()))
             return response
 
-    def another(self):
-        return serializer
-
-class GetCSV(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return FilterFeedback().get(request)
-
-
 
 class GetRatingCount(APIView):
     permission_classes = [AllowAny]

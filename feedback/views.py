@@ -333,7 +333,7 @@ class GetTotalCountDistrictSubdivision(APIView):
             )
 
 class GetCountForEachRating(APIView):
-    def post(self, request):
+    def get(self, request):
         data = responseModel.objects.all().values("res4").annotate(total=Count('res4'))
         lst = list(data)
         return Response(

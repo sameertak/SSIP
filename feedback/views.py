@@ -247,7 +247,7 @@ class FilterFeedback(APIView):
             for ele in serializer.data:
                 writer.writerow(list(ele.values()))
 
-            return Response(response, status=status.HTTP_200_OK)
+            return response
 
 
 

@@ -255,8 +255,6 @@ class FilterFeedback(APIView):
             for ele in serializer.data:
                 writer.writerow(list(ele.values())[1:-2])
 
-            print(writer)
-            print(response)
             return response
 
         except:
@@ -319,8 +317,8 @@ class GetTotalCountDistrictSubdivision(APIView):
         district = response['district']
 
         if district != "":
-            q = "SELECT stations_stationmodel.id, COUNT(*) AS count FROM feedback_responsemodel INNER JOIN stations_stationmodel ON feedback_responsemodel.station_id = stations_stationmodel.station_id WHERE " \
-                "stations_stationmodel.district =" + "'" + district + "' GROUP BY stations_stationmodel.subdivision,stations_stationmodel.id"
+            q = "SELECT feedback_responsemodel.id, COUNT(*) AS count FROM feedback_responsemodel INNER JOIN stations_stationmodel ON feedback_responsemodel.station_id = stations_stationmodel.station_id WHERE " \
+                "stations_stationmodel.district =" + "'" + district + "' GROUP BY stations_stationmodel.subdivision, feedback_responsemodel.id"
             queryset = stationModel.objects.raw(q)
             serializer = SubdivisionCountSerializer(queryset, many=True)
             return Response(

@@ -242,23 +242,23 @@ class FilterFeedback(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-    # def get(self, request, *args, **kwargs):
-    #         response = Response(content_type='text/csv')
-    #         response['Content-Disposition'] = 'attachment; filename="feedback.csv"'
-    #
-    #         writer = csv.writer(response)
-    #         writer.writerow(['ID', 'Station ID', 'HOW DID YOU COME TO THE POLICE STATION?', 'AFTER HOW MUCH TIME YOU WERE HEARD IN PS?', 'HOW WOULD YOU DESCRIBE YOUR EXPERIENCE WITH POLICE OFFICERS IN THE POLICE STATION?', 'RATINGS', 'created_at', 'updated_at', 'res'])
-    #
-    #         for ele in serializer.data:
-    #             writer.writerow(list(ele.values()))
-    #         return response
+    def get(self, request, *args, **kwargs):
+            response = Response(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="feedback.csv"'
 
-    def get(self, request):
-        email = request['username']
-        user = User.objects.get(username=email)
-        uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
-        token = PasswordResetTokenGenerator().make_token(user)
-        current_site = get_current_site(request=request).domain
+            writer = csv.writer(response)
+            writer.writerow(['ID', 'Station ID', 'HOW DID YOU COME TO THE POLICE STATION?', 'AFTER HOW MUCH TIME YOU WERE HEARD IN PS?', 'HOW WOULD YOU DESCRIBE YOUR EXPERIENCE WITH POLICE OFFICERS IN THE POLICE STATION?', 'RATINGS', 'created_at', 'updated_at', 'res'])
+
+            for ele in serializer.data:
+                writer.writerow(list(ele.values()))
+            return response
+    #
+    # def get(self, request):
+    #     email = request['username']
+    #     user = User.objects.get(username=email)
+    #     uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
+    #     token = PasswordResetTokenGenerator().make_token(user)
+    #     current_site = get_current_site(request=request).domain
 
 
 class GetRatingCount(APIView):

@@ -239,7 +239,7 @@ class FilterFeedback(APIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            response = HttpResponse(content_type='application/pcap')
+            response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename="feedback.csv"'
 
             writer = csv.writer(response)
@@ -248,9 +248,7 @@ class FilterFeedback(APIView):
             for ele in serializer.data:
                 writer.writerow(list(ele.values()))
 
-            print(writer)
-            print(response)
-            return Response(response, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(response, status=status.HTTP_200_OK)
 
         except:
             return Response(data={'message': 'Unable to access the data'}, status=status.HTTP_400_BAD_REQUEST)

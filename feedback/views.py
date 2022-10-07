@@ -66,7 +66,7 @@ class FilterFeedback(APIView):
             subdivision = response["subdivision"]
             rating = response["rating"]
             station_id = response["station_id"]
-            page = (int(response["pg"]) - 1) * 5
+            page = (int(response["pg"]) - 1) * 10
 
             if station_id != "" and rating == "" and district == "" and subdivision == "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
@@ -264,7 +264,7 @@ class FilterFeedback(APIView):
 
             if district != "" and subdivision == "" and rating == "" and station_id == "":
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
-                    "f.station_id=s.station_id WHERE s.district=" + "'" + district + f"' ORDER BY f.created_at DESC LIMIT '5' OFFSET '{page}'"
+                    "f.station_id=s.station_id WHERE s.district=" + "'" + district + f"' ORDER BY f.created_at DESC LIMIT '10' OFFSET '{page}'"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
 

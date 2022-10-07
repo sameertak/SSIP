@@ -243,7 +243,8 @@ class FilterFeedback(APIView):
             )
 
     def get(self, request, *args, **kwargs):
-            response = Response(content_type='text/csv')
+        try:
+            response = HttpResponse(content_type='application/pcap')
             response['Content-Disposition'] = 'attachment; filename="feedback.csv"'
 
             writer = csv.writer(response)
@@ -251,7 +252,13 @@ class FilterFeedback(APIView):
 
             for ele in serializer.data:
                 writer.writerow(list(ele.values()))
+
+            print(writer)
+            print(response)
             return response
+
+        except:
+            return Response(data={'message': 'Unable to access the data'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetRatingCount(APIView):

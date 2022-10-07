@@ -120,7 +120,7 @@ class FilterFeedback(APIView):
                 q = "SELECT f.* FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON " \
                     "f.station_id=s.station_id WHERE s.station_id=" + "'" + station_id + "' AND f.district=" + "'" + \
                     district + f"' ORDER BY f.created_at DESC"
-                queryset = responseModel.objects.raw(q)
+                queryset = responseModel.objects.raw(q) 
                 serializer1 = FeedbackSerializers(queryset, many=True)
 
                 count = len(serializer1.data)

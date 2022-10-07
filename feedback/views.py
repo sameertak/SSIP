@@ -3,6 +3,7 @@ import csv
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import Count
 from django.http import HttpResponse
 from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.encoding import smart_bytes
@@ -329,4 +330,13 @@ class GetTotalCountDistrictSubdivision(APIView):
         else:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
+            )
+
+class GetCountForEachRating(APIView):
+    def post(self, request):
+        data = responseModel.objects.all().values("res4").annotate(total=Count('res4'))
+        lst = list(data)
+        return Response(
+            data=lst,
+                status=status.HTTP_200_OK
             )

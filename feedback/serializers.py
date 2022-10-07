@@ -33,3 +33,4 @@ class SubdivisionCountSerializer(serializers.ModelSerializer):
     class Meta:
         model = responseModel
         fields = ('subdivision', 'count')
+

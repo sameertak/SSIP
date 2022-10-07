@@ -74,8 +74,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -91,7 +90,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -107,7 +106,7 @@ class FilterFeedback(APIView):
                     district + "' ORDER BY f.created_at DESC LIMIT '" + str(page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -123,7 +122,7 @@ class FilterFeedback(APIView):
                     subdivision + "' ORDER BY f.created_at DESC LIMIT '" + str(page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -140,7 +139,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -157,7 +156,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -173,7 +172,7 @@ class FilterFeedback(APIView):
                     district + "' ORDER BY f.created_at DESC LIMIT '" + str(page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -190,7 +189,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -204,7 +203,7 @@ class FilterFeedback(APIView):
                 q = "SELECT * FROM feedback_responsemodel ORDER BY feedback_responsemodel.created_at DESC LIMIT '" + str(page) + "' OFFSET 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -220,7 +219,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -236,7 +235,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -252,7 +251,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -268,7 +267,7 @@ class FilterFeedback(APIView):
                     subdivision + "' ORDER BY f.created_at DESC LIMIT '" + str(page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -284,7 +283,7 @@ class FilterFeedback(APIView):
                     "' ORDER BY f.created_at DESC LIMIT '" + str(page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -300,7 +299,7 @@ class FilterFeedback(APIView):
                     rating + "' ORDER BY f.created_at DESC LIMIT '" + str(page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={
@@ -317,7 +316,7 @@ class FilterFeedback(APIView):
                     page) + "', 10"
                 queryset = responseModel.objects.raw(q)
                 serializer = FeedbackSerializers(queryset, many=True)
-                count = responseModel.objects.all().count()
+                count = len(serializer.data)
 
                 return Response(
                     data={

@@ -200,9 +200,9 @@ class FilterFeedback(APIView):
                 )
 
             if district == "" and subdivision == "" and rating == "" and station_id == "":
-                print(str(page))
-                q = f"SELECT * FROM feedback_responsemodel ORDER BY feedback_responsemodel.created_at DESC LIMIT '{str(page)}' OFFSET '10'"
+                q = f"SELECT * FROM feedback_responsemodel ORDER BY feedback_responsemodel.created_at DESC LIMIT '10' OFFSET '{page}'"
                 queryset = responseModel.objects.raw(q)
+                print(q)
                 serializer = FeedbackSerializers(queryset, many=True)
                 count = len(serializer.data)
 

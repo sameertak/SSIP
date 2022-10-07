@@ -49,7 +49,6 @@ REST_FRAMEWORK = {
         'anon': '500/minute',
         'user': '1000/minute',
         'loginAttempts': '3/hr',
-
     }
 }
 

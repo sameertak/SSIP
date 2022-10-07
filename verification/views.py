@@ -8,9 +8,7 @@ from .models import phoneModel
 import base64
 from twilio.rest import Client
 from decouple import config
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from django.utils import timezone
-import django
+from rest_framework.permissions import AllowAny
 import geocoder
 
 

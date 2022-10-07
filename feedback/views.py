@@ -51,7 +51,7 @@ class form(APIView):
 
 
 class FilterFeedback(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @staticmethod
     def post(request):
@@ -252,13 +252,16 @@ class FilterFeedback(APIView):
             for ele in serializer.data:
                 writer.writerow(list(ele.values()))
             return response
-    #
-    # def get(self, request):
-    #     email = request['username']
-    #     user = User.objects.get(username=email)
-    #     uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
-    #     token = PasswordResetTokenGenerator().make_token(user)
-    #     current_site = get_current_site(request=request).domain
+
+    def another(self):
+        return serializer
+
+class GetCSV(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return FilterFeedback().get(request)
+
 
 
 class GetRatingCount(APIView):

@@ -250,7 +250,7 @@ class FilterFeedback(APIView):
 
             print(writer)
             print(response)
-            return response
+            return Response(response, status=status.HTTP_401_UNAUTHORIZED)
 
         except:
             return Response(data={'message': 'Unable to access the data'}, status=status.HTTP_400_BAD_REQUEST)

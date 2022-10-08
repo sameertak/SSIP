@@ -524,7 +524,7 @@ class GetCountForEachRating(APIView):
 class GetAverageRatings(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        q = "SELECT *, AVG(CAST(f.res4 as integer)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district"
+        q = "SELECT *, AVG(CAST(f.res4 as integer)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district, f.id"
         queryset = stationModel.objects.raw(q)
 
         serializer = AvgRatingCountSerializer(queryset, many=True)

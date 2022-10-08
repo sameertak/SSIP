@@ -550,7 +550,7 @@ class GetAvgDistrictSubdivision(APIView):
 
         if district != "":
             cursor = connection.cursor()
-            cursor.execute("SELECT s.subdivision, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district, s.subdivision")
+            cursor.execute("SELECT s.subdivision, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.subdivision WHERE s.district='"+district+"'")
             row = cursor.description
             nt_result = namedtuple('Result', [col[0] for col in row])
             res = [nt_result(*row) for row in cursor.fetchall()]

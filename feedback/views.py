@@ -525,8 +525,6 @@ class GetCountForEachRating(APIView):
 class GetAverageRatings(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        # q = "SELECT *, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district, f.id, s.id"
-        # queryset = stationModel.objects.raw(q)
         cursor = connection.cursor()
         cursor.execute("SELECT s.district, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district")
         row = cursor.description
@@ -543,15 +541,30 @@ class GetAverageRatings(APIView):
         )
 
 
-# class FeedbackFromDistrict(APIView):
-#     permission_classes = [AllowAny]
-#
-#     def get(self, request):
-#         # q = "SELECT stations_stationmodel.id, COUNT(*) AS count FROM feedback_responsemodel INNER JOIN stations_stationmodel ON feedback_responsemodel.station_id = stations_stationmodel.station_id GROUP BY stations_stationmodel.district"
-#         # queryset = stationModel.objects.raw(q)
-#         print(responseModel.objects.filter(station_id=stationModel.objects.filter(station_id='GJ0101')))
-#         # serializer = DistrictCountSerializer(queryset, many=True)
-#         return Response(
-#             # serializer.data,
-#             status=status.HTTP_200_OK
-#         )
+class GetAvgDistrictSubdivision(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        response = request.data
+        district = response['district']
+
+        if district != "":
+
+            cursor = connection.cursor()
+            cursor.execute("SELECT s.subdivision, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.subdivision")
+            row = cursor.description
+            nt_result = namedtuple('Result', [col[0] for col in row])
+            res = [nt_result(*row) for row in cursor.fetchall()]
+            dct = {}
+            for i in range(len(res)):
+                dct[res[i][0]] = res[i][1]
+
+            return Response(
+               data= {"data": dct
+                },
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST
+            )

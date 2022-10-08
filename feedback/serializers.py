@@ -41,3 +41,16 @@ class AvgRatingCountSerializer(serializers.ModelSerializer):
     class Meta:
         model=responseModel
         fields = ('district', 'count')
+
+
+class ResponseHeardSerializer(serializers.ModelSerializer):
+    res = serializers.CharField(min_length=1)
+    station_id = serializers.CharField(min_length=1)
+    res1 = serializers.CharField(min_length=1)
+    res2 = serializers.CharField(min_length=1)
+    res3 = serializers.CharField(min_length=1)
+    res4 = serializers.CharField(min_length=1)
+
+    class Meta:
+        model=responseModel
+        fields = ('res1', 'res2', 'res3', 'res4', 'station_id', 'res')

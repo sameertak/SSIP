@@ -16,7 +16,7 @@ from rest_framework import status
 
 from stations.models import stationModel
 from .serializers import FeedbackSerializers, RatingCountSerializer, SubdivisionCountSerializer, \
-    AvgRatingCountSerializer
+    ResponseHeardSerializer
 from .models import responseModel
 from verification.models import phoneModel
 
@@ -549,7 +549,7 @@ class GetAvgDistrictSubdivision(APIView):
         district = response['district']
 
         if district != "":
-
+            res=[]
             cursor = connection.cursor()
             cursor.execute("SELECT s.subdivision, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.subdivision")
             row = cursor.description
@@ -568,3 +568,13 @@ class GetAvgDistrictSubdivision(APIView):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+class ResponseHeard(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        data = responseModel.objects.all().annotate(Count('res2', distinct=True))
+
+        print(data)
+
+        return Response( status= status.HTTP_200_OK)

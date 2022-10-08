@@ -17,7 +17,8 @@ class generateKey:
     def returnValue(phone):
         return str(phone) + str(datetime.date(datetime.now()))
 
-EXPIRY_TIME = 50
+
+EXPIRY_TIME = 150
 
 
 class getPhoneNumberRegistered_TimeBased(APIView):

@@ -1,5 +1,5 @@
 import csv
-
+from django.db import connection
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
@@ -524,7 +524,7 @@ class GetCountForEachRating(APIView):
 class GetAverageRatings(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        q = "SELECT *, AVG(CAST(f.res4 as integer)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district, f.id"
+        q = "SELECT *, AVG(CAST(f.res4 as integer)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district"
         queryset = stationModel.objects.raw(q)
 
         serializer = AvgRatingCountSerializer(queryset, many=True)
@@ -532,3 +532,17 @@ class GetAverageRatings(APIView):
             serializer.data,
             status=status.HTTP_200_OK
         )
+
+
+# class FeedbackFromDistrict(APIView):
+#     permission_classes = [AllowAny]
+#
+#     def get(self, request):
+#         # q = "SELECT stations_stationmodel.id, COUNT(*) AS count FROM feedback_responsemodel INNER JOIN stations_stationmodel ON feedback_responsemodel.station_id = stations_stationmodel.station_id GROUP BY stations_stationmodel.district"
+#         # queryset = stationModel.objects.raw(q)
+#         print(responseModel.objects.filter(station_id=stationModel.objects.filter(station_id='GJ0101')))
+#         # serializer = DistrictCountSerializer(queryset, many=True)
+#         return Response(
+#             # serializer.data,
+#             status=status.HTTP_200_OK
+#         )

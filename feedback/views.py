@@ -36,7 +36,7 @@ class form(APIView):
                 verify = phoneModel.objects.filter(mobile=mob[1], is_verified=True).values_list()[0]
                 serializer.save()
                 mydata = phoneModel.objects.get(mobile=mob[1])
-                mydata.is_verified = False
+                # mydata.is_verified = False
                 mydata.save()
                 return Response(data={"message": serializer.data}, status=status.HTTP_200_OK)
             except IndexError:

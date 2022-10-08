@@ -542,7 +542,7 @@ class GetAverageRatings(APIView):
 
 
 class GetAvgDistrictSubdivision(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         response = request.data
@@ -569,7 +569,7 @@ class GetAvgDistrictSubdivision(APIView):
             )
 
 class ResponseHeard(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = responseModel.objects.all().annotate(Count('res2', distinct=True))
@@ -577,3 +577,15 @@ class ResponseHeard(APIView):
         print(data)
 
         return Response( status= status.HTTP_200_OK)
+
+
+class GetRes2(APIView):
+
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        data = responseModel.objects.all().order_by('res2').values("res2").annotate(total=Count('res2'))
+        lst = list(data)
+        return Response(
+            data=lst,
+                status=status.HTTP_200_OK
+            )

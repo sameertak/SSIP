@@ -1,5 +1,5 @@
 from .views import FilterFeedback, form, GetRatingCount, GetTotalCountDistrictSubdivision, GetTotalFeedbackCount, \
-    GetCountForEachRating, GetAverageRatings, GetAvgDistrictSubdivision, ResponseHeard
+    GetCountForEachRating, GetAverageRatings, GetAvgDistrictSubdivision, ResponseHeard, GetRes2
 from django.urls import path
 
 urlpatterns = [
@@ -11,5 +11,6 @@ urlpatterns = [
     path("rating-full/", GetCountForEachRating.as_view(), name="Total Count"),
     path("avg-rating/", GetAverageRatings.as_view(), name="Average Ratings"),
     path("avg-sub-div/", GetAvgDistrictSubdivision.as_view(), name="Avg Count"),
-    path("response/", ResponseHeard.as_view())
+    path("response/", ResponseHeard.as_view()),
+    path("res2-get/", GetRes2.as_view(), name="res2 get")
 ]

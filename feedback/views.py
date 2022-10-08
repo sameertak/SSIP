@@ -1,4 +1,5 @@
 import csv
+from collections import namedtuple
 from django.db import connection
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -524,12 +525,20 @@ class GetCountForEachRating(APIView):
 class GetAverageRatings(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        q = "SELECT *, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district, f.id, s.id"
-        queryset = stationModel.objects.raw(q)
+        # q = "SELECT *, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district, f.id, s.id"
+        # queryset = stationModel.objects.raw(q)
+        cursor = connection.cursor()
+        cursor.execute("SELECT s.district, AVG(CAST(f.res4 as int)) AS count FROM feedback_responsemodel f INNER JOIN stations_stationmodel s ON f.station_id=s.station_id GROUP BY s.district")
+        row = cursor.description
+        nt_result = namedtuple('Result', [col[0] for col in row])
+        res = [nt_result(*row) for row in cursor.fetchall()]
+        dct = {}
+        for i in range(len(res)):
+            dct[res[i][0]] = res[i][1]
 
-        serializer = AvgRatingCountSerializer(queryset, many=True)
+        # serializer = AvgRatingCountSerializer(queryset, many=True)
         return Response(
-            serializer.data,
+            data = {'data': dct},
             status=status.HTTP_200_OK
         )
 

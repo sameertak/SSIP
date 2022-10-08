@@ -61,7 +61,7 @@ class FilterFeedback(APIView):
     @staticmethod
     def post(request):
         response = request.data
-        global serializer
+        global serializer1
 
         try:
             district = response["district"]
@@ -433,7 +433,7 @@ class FilterFeedback(APIView):
             writer = csv.writer(response)
             writer.writerow(['Station ID', 'HOW DID YOU COME TO THE POLICE STATION?', 'AFTER HOW MUCH TIME YOU WERE HEARD IN PS?', 'HOW WOULD YOU DESCRIBE YOUR EXPERIENCE WITH POLICE OFFICERS IN THE POLICE STATION?', 'RATINGS', 'created_at'])
 
-            for ele in serializer.data:
+            for ele in serializer1.data:
                 writer.writerow(list(ele.values())[1:-2])
 
             return response
